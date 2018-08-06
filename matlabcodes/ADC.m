@@ -5,7 +5,8 @@ clear all; %limpa as variaveis
 close all; %fecha janelas...
 clc; % limpa console
 amostas = 200
-s = serial('COM3');             %assigns the object s to serial port
+
+s = serial('COM15');             %assigns the object s to serial port
 
 set(s, 'InputBufferSize', amostas*2); % tamamnho do buffer  (tanto de coisa que vai ler)
 set(s, 'FlowControl', 'hardware');% de onde vem a informação (serial do microcontrolador etc)
@@ -40,12 +41,12 @@ while(t <= amostas)             %Runs for 200 cycles - if you cant see the
     a = fgetl(s);            % ler o que vem como texto (string) %fread(s,4,'single');%,'SIZE',16.000,'PRECISION','%f'); %reads the data from the serial port and stores it to the matrix a
     fprintf('%s',a);
     try
-        x(t)=str2num(a);
-        
-        
-        a = fgetl(s);            % ler o que vem como texto (string) %fread(s,4,'single');%,'SIZE',16.000,'PRECISION','%f'); %reads the data from the serial port and stores it to the matrix a
-        fprintf('%s',a);
         y(t)=str2num(a);
+        
+        
+%         a = fgetl(s);            % ler o que vem como texto (string) %fread(s,4,'single');%,'SIZE',16.000,'PRECISION','%f'); %reads the data from the serial port and stores it to the matrix a
+%         fprintf('%s',a);
+%         y(t)=str2num(a);
         %     x(t)=t*0.005;            % multiplicando pela taxa de amostragem % x(t)
         %e y(t) são para construir um gráfico no final
         %     y(t)=str2num(a); % a é uma string, srt2num converte uma string
@@ -57,7 +58,7 @@ end
 
 fprintf('\nFim da coleta, tratando dados.')
 t=1;
-while(t <= 2000)
+while(t <= amostas)
     if(y(t)<0)
         y(t) = 0.00;
     end
@@ -77,21 +78,21 @@ minutos = num2str(time(5));
 nome_do_arquivo = strcat(adress,dia,'-',mes,'-',ano,'_',horas,'-',minutos,'.txt.');
 id_do_arquivo = fopen(nome_do_arquivo,'wt'); % wt = write, refere-se à ação que se deseja fazer com o arquivo
 t=1;
-while(t <= 200)
-    fprintf(id_do_arquivo,'\t%5.3f\t%8.2f\n',x(t),y(t));
-    t=t+1;
-end
+% while(t <= 200)
+%     fprintf(id_do_arquivo,'\t%5.3f\t%8.2f\n',x(t),y(t));
+%     t=t+1;
+% end
 fclose(id_do_arquivo);
 fprintf('\nArquivo gravado.\n\n')
 
 
-plot(x,y)
-z = trapz(x,y);
+plot(y)
+% z = trapz(x,y);
 %y está em gramas e x está em segundos
 % 1Kg = 9.81 N = 1000g -> y*9.81/1000
-z = z*9.81/1000;
+% z = z*9.81/1000;
 
-fprintf('Valor da integral: %f N.s',z)
+% fprintf('Valor da integral: %f N.s',z)
 
 
 

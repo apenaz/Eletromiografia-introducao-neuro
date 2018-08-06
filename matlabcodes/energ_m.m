@@ -7,7 +7,6 @@ sinais = input ('Fornecer o número de sinais n.wav:\n');
 energia = (1:sinais);
 caminho = 'F:\\varios\\wav_files\\m\\';
 for i = 1:sinais
-    disp(i);
     audio_name = sprintf('%d.wav ',i); %cria o nome do arquivo de audio de acordo com a sequencia salva na pasta
     path_audio = strcat(caminho,audio_name);
     amplitude = audioread(path_audio);% leitura do sinal convertido para o formato wave
@@ -29,5 +28,3 @@ stem(pesos,energia);
 title('Energia do sinal captado');
 xlabel('peso em gramas');
 ylabel('energia')
-
-
